@@ -25,6 +25,7 @@ func init() {
 		os.Exit(1)
 	}
 	LoadServer(cfg)
+	LoadData(cfg)
 }
 
 func LoadServer(iniFile *ini.File) {
