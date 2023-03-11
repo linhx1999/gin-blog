@@ -24,7 +24,7 @@ func InitDB() {
 		panic("failed to connect database")
 	}
 
-	db.AutoMigrate(&User{}, &Article{}, &Category{})
+	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{}, &Article{}, &Category{})
 
 	// 获取通用数据库对象 sql.DB ，然后使用其提供的功能
 	sqlDB, err := db.DB()
