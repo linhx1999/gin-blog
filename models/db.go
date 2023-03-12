@@ -4,9 +4,13 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
+	"linhx1999.com/gin-blog/models/Article"
+	"linhx1999.com/gin-blog/models/Category"
 	setting "linhx1999.com/gin-blog/utils"
 	"time"
 )
+
+var DB *gorm.DB
 
 func InitDB() {
 	dsn := setting.DBUser + ":" +
@@ -24,7 +28,7 @@ func InitDB() {
 		panic("failed to connect database")
 	}
 
-	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{}, &Article{}, &Category{})
+	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&Article.Article{}, &Category.Category{})
 
 	// 获取通用数据库对象 sql.DB ，然后使用其提供的功能
 	sqlDB, err := db.DB()

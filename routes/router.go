@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	v1 "linhx1999.com/gin-blog/api/v1"
 	setting "linhx1999.com/gin-blog/utils"
 	"net/http"
 )
@@ -9,15 +10,26 @@ import (
 func SetupRouter() *gin.Engine {
 	// Disable Console Color
 	// gin.DisableConsoleColor()
+
 	gin.SetMode(setting.AppMode)
 	r := gin.Default()
 
+	// Ping test
+	r.GET("/ping", func(c *gin.Context) {
+		c.String(http.StatusOK, "pong")
+	})
+
 	router := r.Group("api/v1")
 	{
-		// Ping test
-		router.GET("/ping", func(c *gin.Context) {
-			c.String(http.StatusOK, "pong")
-		})
+		//router.POST("users", v1.PostUser)
+		//router.GET("users", v1.GetUsers)
+		//router.PUT("users/:id", v1.PutUser)
+		//router.DELETE("users/:id", v1.DeleteUser)
+
+		router.POST("users", v1.PostCategory)
+		router.GET("users", v1.GetCategories)
+		router.PUT("users/:id", v1.PutCategory)
+		router.DELETE("users/:id", v1.DeleteCategory)
 	}
 
 	// Get user value
