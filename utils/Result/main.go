@@ -5,7 +5,7 @@ import "net/http"
 var errCodeMsg = map[string]string{
 	"00000": "一切ok", // 正确执行后的返回
 
-	"A0001": "用户端错误",  // 一级宏观错误码
+	"A0001": "用户端错误",   // 一级宏观错误码
 	"A0100": "用户注册错误", // 二级宏观错误码
 	"A0200": "用户登录异常",
 	"A0300": "访问权限异常",
@@ -37,18 +37,18 @@ var errCodeMsg = map[string]string{
 }
 
 type result struct {
-	Status  int
-	Message string
-	Data    interface{}
+	Status  int    `json:"status"`
+	Message string `json:"message"`
+	Data    any    `json:"data"`
 }
 
-type error struct {
-	code    string
-	errMsg  string
-	userMsg string
+type ErrData struct {
+	Code    string `json:"code"`
+	ErrMsg  string `json:"errMsg"`
+	UserMsg string `json:"userMsg"`
 }
 
-func NewSuccess(msg string, data interface{}) *result {
+func NewSuccess(msg string, data []interface{}) *result {
 	return &result{
 		Status:  http.StatusOK,
 		Message: msg,
@@ -60,10 +60,10 @@ func NewFail(status int, msg string, errorCode string, userMsg string) *result {
 	return &result{
 		Status:  status,
 		Message: msg,
-		Data: error{
+		Data: []any{ErrData{
 			errorCode,
 			errCodeMsg[errorCode],
 			userMsg,
-		},
+		}},
 	}
 }

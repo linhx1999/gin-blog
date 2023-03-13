@@ -4,13 +4,11 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
-	"linhx1999.com/gin-blog/models/Article"
-	"linhx1999.com/gin-blog/models/Category"
 	setting "linhx1999.com/gin-blog/utils"
 	"time"
 )
 
-var DB *gorm.DB
+var db *gorm.DB
 
 func InitDB() {
 	dsn := setting.DBUser + ":" +
@@ -18,7 +16,8 @@ func InitDB() {
 		setting.DBHost + ":" +
 		setting.DBPort + ")/" +
 		setting.DBName + "?charset=utf8mb4&parseTime=True&loc=Local"
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+	var err error
+	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		},
@@ -28,11 +27,11 @@ func InitDB() {
 		panic("failed to connect database")
 	}
 
-	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&Article.Article{}, &Category.Category{})
+	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&Article{}, &Category{})
 
-	// 获取通用数据库对象 sql.DB ，然后使用其提供的功能
+	// 获取通用数据库对象 sql.db ，然后使用其提供的功能
 	sqlDB, err := db.DB()
-	defer sqlDB.Close()
+	//defer sqlDB.Close()
 
 	// SetMaxIdleConns 用于设置连接池中空闲连接的最大数量。
 	sqlDB.SetMaxIdleConns(10)
