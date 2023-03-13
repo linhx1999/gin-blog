@@ -30,6 +30,13 @@ func SetupRouter() *gin.Engine {
 		router.GET("categories", v1.GetCategories)
 		router.PUT("categories/:id", v1.PutCategory)
 		router.DELETE("categories/:id", v1.DeleteCategory)
+
+		router.POST("articles", v1.PostArticle)
+		router.DELETE("articles/:id", v1.DeleteArticle)
+		router.PUT("articles/:id", v1.PutArticle)
+		router.GET("articles", v1.GetArticles)
+		router.GET("articles/:id", v1.GetArticleByID)
+		router.GET("categories/:id/articles", v1.GetArticlesInCategory)
 	}
 
 	// Get user value

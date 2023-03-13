@@ -94,7 +94,7 @@ func GetCategories(c *gin.Context) {
 	c.JSON(
 		http.StatusOK,
 		Result.NewSuccess(
-			"查找成功",
+			"查找分类成功",
 			categories,
 		),
 	)
@@ -148,7 +148,7 @@ func PutCategory(c *gin.Context) {
 	c.JSON(
 		http.StatusOK,
 		Result.NewSuccess(
-			"修改成功",
+			"修改分类成功",
 			[]any{},
 		),
 	)
@@ -176,7 +176,7 @@ func DeleteCategory(c *gin.Context) {
 	c.JSON(
 		http.StatusOK,
 		Result.NewSuccess(
-			"删除成功",
+			"删除分类成功",
 			[]any{},
 		),
 	)
