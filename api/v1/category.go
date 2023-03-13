@@ -5,6 +5,7 @@ import (
 	"linhx1999.com/gin-blog/models"
 	"linhx1999.com/gin-blog/utils/Result"
 	"net/http"
+	"strconv"
 )
 
 func PostCategory(c *gin.Context) {
@@ -17,7 +18,7 @@ func PostCategory(c *gin.Context) {
 			Result.NewFail(
 				http.StatusBadRequest,
 				err.Error(),
-				"A0402",
+				"A0402", // 无效的用户输入
 				"",
 			),
 		)
@@ -74,6 +75,55 @@ func PostCategory(c *gin.Context) {
 }
 
 func GetCategories(c *gin.Context) {
+	pageSize, err := strconv.Atoi(c.Query("pageSize"))
+	if err != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			Result.NewFail(
+				http.StatusBadRequest,
+				err.Error(),
+				"A0402", // 无效的用户输入
+				"请输入正整数",
+			),
+		)
+		return
+	}
+
+	pageNum, err := strconv.Atoi(c.Query("pageSize"))
+	if err != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			Result.NewFail(
+				http.StatusBadRequest,
+				err.Error(),
+				"A0402", // 无效的用户输入
+				"请输入正整数",
+			),
+		)
+		return
+	}
+
+	data, err := models.PageCategory(pageSize, pageNum)
+	if err != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			Result.NewFail(
+				http.StatusBadRequest,
+				err.Error(),
+				"",
+				"",
+			),
+		)
+		return
+	}
+
+	c.JSON(
+		http.StatusOK,
+		Result.NewSuccess(
+			"保存成功",
+			data,
+		),
+	)
 
 }
 
