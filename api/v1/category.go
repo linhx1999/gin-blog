@@ -24,7 +24,7 @@ func PostCategory(c *gin.Context) {
 		return
 	}
 
-	count, err := models.CountByName(category.Name)
+	count, err := models.CountCategoryByName(category.Name)
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
@@ -50,7 +50,7 @@ func PostCategory(c *gin.Context) {
 		return
 	}
 
-	err = models.Save(&category)
+	err = models.SaveCategory(&category)
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
