@@ -20,7 +20,7 @@ func SaveCategory(category *Category) error {
 
 func PageCategory(pageSize int, pageNum int) ([]Category, error) {
 	var categories []Category
-	err := db.Limit(pageSize).Offset((pageSize - 1) * pageNum).
+	err := db.Limit(pageSize).Offset((pageNum - 1) * pageSize).
 		Find(&categories).Error
 	return categories, err
 }

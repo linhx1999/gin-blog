@@ -15,12 +15,7 @@ func PostCategory(c *gin.Context) {
 	if err = c.ShouldBindJSON(&category); err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(
-				http.StatusBadRequest,
-				err.Error(),
-				"A0402", // 无效的用户输入
-				"",
-			),
+			Result.NewFail(http.StatusBadRequest, err.Error()),
 		)
 		return
 	}
@@ -29,24 +24,14 @@ func PostCategory(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(
-				http.StatusBadRequest,
-				err.Error(),
-				"A0402",
-				"",
-			),
+			Result.NewFail(http.StatusBadRequest, err.Error()),
 		)
 		return
 	}
 	if count > 0 {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(
-				http.StatusBadRequest,
-				"分类已存在",
-				"A0402",
-				"分类已存在",
-			),
+			Result.NewFail(http.StatusBadRequest, err.Error()),
 		)
 		return
 	}
@@ -55,12 +40,7 @@ func PostCategory(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(
-				http.StatusBadRequest,
-				err.Error(),
-				"C0300",
-				"分类保存失败",
-			),
+			Result.NewFail(http.StatusBadRequest, err.Error()),
 		)
 		return
 	}
@@ -75,44 +55,36 @@ func PostCategory(c *gin.Context) {
 }
 
 func GetCategories(c *gin.Context) {
-	pageSize, err := strconv.Atoi(c.Query("pageSize"))
+	pageSize, err := strconv.Atoi(c.Query("page_size"))
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(
-				http.StatusBadRequest,
-				err.Error(),
-				"A0402", // 无效的用户输入
-				"请输入正整数",
-			),
+			Result.NewFail(http.StatusBadRequest, err.Error()),
 		)
 		return
 	}
 
-	pageNum, err := strconv.Atoi(c.Query("pageSize"))
+	pageNum, err := strconv.Atoi(c.Query("page_num"))
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(
-				http.StatusBadRequest,
-				err.Error(),
-				"A0402", // 无效的用户输入
-				"请输入正整数",
-			),
+			Result.NewFail(http.StatusBadRequest, err.Error()),
 		)
 		return
 	}
 
-	data, err := models.PageCategory(pageSize, pageNum)
+	if pageSize == 0 {
+		pageSize = -1
+	}
+	if pageNum == 0 {
+		pageNum = -1
+	}
+
+	categories, err := models.PageCategory(pageSize, pageNum)
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(
-				http.StatusBadRequest,
-				err.Error(),
-				"",
-				"",
-			),
+			Result.NewFail(http.StatusBadRequest, err.Error()),
 		)
 		return
 	}
@@ -120,8 +92,8 @@ func GetCategories(c *gin.Context) {
 	c.JSON(
 		http.StatusOK,
 		Result.NewSuccess(
-			"保存成功",
-			data,
+			"查找成功",
+			categories,
 		),
 	)
 
