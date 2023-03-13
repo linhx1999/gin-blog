@@ -49,7 +49,7 @@ func PostCategory(c *gin.Context) {
 	c.JSON(
 		http.StatusOK,
 		Result.NewSuccess(
-			"保存成功",
+			"新增分类成功",
 			[]any{},
 		),
 	)
@@ -101,9 +101,83 @@ func GetCategories(c *gin.Context) {
 }
 
 func PutCategory(c *gin.Context) {
+	var category models.Category
 
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			Result.NewFail(http.StatusBadRequest, err.Error()),
+		)
+		return
+	}
+
+	if err = c.ShouldBindJSON(&category); err != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			Result.NewFail(http.StatusBadRequest, err.Error()),
+		)
+		return
+	}
+
+	count, err := models.CountCategoryByName(category.Name)
+	if err != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			Result.NewFail(http.StatusBadRequest, err.Error()),
+		)
+		return
+	}
+	if count > 0 {
+		c.JSON(
+			http.StatusBadRequest,
+			Result.NewFail(http.StatusBadRequest, err.Error()),
+		)
+		return
+	}
+
+	err = models.UpdateCategoryByID(uint(id), &category)
+	if err != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			Result.NewFail(http.StatusBadRequest, err.Error()),
+		)
+		return
+	}
+
+	c.JSON(
+		http.StatusOK,
+		Result.NewSuccess(
+			"修改成功",
+			[]any{},
+		),
+	)
 }
 
 func DeleteCategory(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			Result.NewFail(http.StatusBadRequest, err.Error()),
+		)
+		return
+	}
 
+	err = models.RemoveCategoryByID(uint(id))
+	if err != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			Result.NewFail(http.StatusBadRequest, err.Error()),
+		)
+		return
+	}
+
+	c.JSON(
+		http.StatusOK,
+		Result.NewSuccess(
+			"删除成功",
+			[]any{},
+		),
+	)
 }
