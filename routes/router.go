@@ -21,7 +21,7 @@ func SetupRouter() *gin.Engine {
 
 	router := r.Group("api/v1")
 	{
-		//router.POST("users", v1.PostUser)
+		router.POST("users", v1.PostUser)
 		//router.GET("users", v1.GetUsers)
 		//router.PUT("users/:id", v1.PutUser)
 		//router.DELETE("users/:id", v1.DeleteUser)

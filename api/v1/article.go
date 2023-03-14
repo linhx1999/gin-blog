@@ -11,7 +11,6 @@ import (
 
 func PostArticle(c *gin.Context) {
 	var article models.Article
-
 	if err := c.ShouldBindJSON(&article); err != nil {
 		c.JSON(
 			http.StatusBadRequest,
@@ -91,6 +90,13 @@ func GetArticleByID(c *gin.Context) {
 	}
 
 	article, err := models.GetArticleByID(id)
+	if article == nil {
+		c.JSON(
+			http.StatusBadRequest,
+			result.New("文章未找到"),
+		)
+		return
+	}
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,

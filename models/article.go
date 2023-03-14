@@ -34,7 +34,7 @@ func GetArticleByID(id int) (*Article, error) {
 		Where("id = ?", id).
 		First(&article).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
-		return &Article{}, err
+		return nil, err
 	}
 	return &article, err
 }

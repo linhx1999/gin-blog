@@ -14,7 +14,6 @@ var mySigningKey = []byte(utils.JwtKey)
 
 type MyCustomClaims struct {
 	Username string `json:"username"`
-	Password string `json:"password"`
 	jwt.RegisteredClaims
 }
 
@@ -22,7 +21,6 @@ func CreatTokenByCustomClaims(username string, password string) (string, error) 
 	//Create the Claims
 	claims := MyCustomClaims{
 		username,
-		password,
 		jwt.RegisteredClaims{
 			// A usual scenario is to set the expiration time relative to the current time
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
