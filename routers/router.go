@@ -1,9 +1,9 @@
-package routes
+package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	v1 "linhx1999.com/gin-blog/api/v1"
-	setting "linhx1999.com/gin-blog/utils"
+	setting "linhx1999.com/gin-blog/config"
+	v1 "linhx1999.com/gin-blog/controllers/v1"
 	"net/http"
 )
 
@@ -19,7 +19,7 @@ func SetupRouter() *gin.Engine {
 		c.String(http.StatusOK, "pong")
 	})
 
-	router := r.Group("api/v1")
+	router := r.Group("controllers/v1")
 	{
 		router.POST("users", v1.PostUser)
 		//router.GET("users", v1.GetUsers)

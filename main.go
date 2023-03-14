@@ -1,18 +1,19 @@
 package main
 
 import (
+	"linhx1999.com/gin-blog/config"
 	"linhx1999.com/gin-blog/models"
-	"linhx1999.com/gin-blog/routes"
-	setting "linhx1999.com/gin-blog/utils"
+	"linhx1999.com/gin-blog/routers"
 )
 
 //var db = make(map[string]string)
 
 func main() {
 	models.InitDB()
+	config.LoadConf()
 
-	r := routes.SetupRouter()
+	r := routers.SetupRouter()
 
 	// Listen and Server in 0.0.0.0:8080
-	r.Run(setting.HttpPort)
+	r.Run(config.HttpPort)
 }

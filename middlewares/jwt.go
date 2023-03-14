@@ -3,14 +3,14 @@ package middlewares
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
-	"linhx1999.com/gin-blog/utils"
+	"linhx1999.com/gin-blog/config"
 	"linhx1999.com/gin-blog/utils/result"
 	"net/http"
 	"strings"
 	"time"
 )
 
-var mySigningKey = []byte(utils.JwtKey)
+var mySigningKey = []byte(config.JwtKey)
 
 type MyCustomClaims struct {
 	Username string `json:"username"`

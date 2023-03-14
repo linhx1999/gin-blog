@@ -1,23 +1,27 @@
 package models
 
 import (
+	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
-	setting "linhx1999.com/gin-blog/utils"
+	"linhx1999.com/gin-blog/config"
 	"time"
 )
 
 var db *gorm.DB
 
 func InitDB() {
-	dsn := setting.DBUser + ":" +
-		setting.DBPassword + "@tcp(" +
-		setting.DBHost + ":" +
-		setting.DBPort + ")/" +
-		setting.DBName + "?charset=utf8mb4&parseTime=True&loc=Local"
-	var err error
-	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
+	dsn := fmt.Sprintf(
+		"%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		config.DBUser,
+		config.DBPassword,
+		config.DBHost,
+		config.DBPort,
+		config.DBName,
+	)
+
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		},

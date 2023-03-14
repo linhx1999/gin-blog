@@ -1,4 +1,4 @@
-package utils
+package config
 
 import (
 	"fmt"
@@ -19,8 +19,8 @@ var (
 	DBPassword string
 )
 
-func init() {
-	cfg, err := ini.Load("config/config.ini")
+func LoadConf() {
+	cfg, err := ini.Load("app.ini")
 	if err != nil {
 		fmt.Printf("Fail to read file: %v", err)
 		os.Exit(1)
