@@ -4,38 +4,34 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"linhx1999.com/gin-blog/models"
-	"linhx1999.com/gin-blog/utils/Result"
+	"linhx1999.com/gin-blog/utils/result"
 	"net/http"
 	"strconv"
 )
 
 func PostArticle(c *gin.Context) {
 	var article models.Article
-	var err error
 
-	if err = c.ShouldBindJSON(&article); err != nil {
+	if err := c.ShouldBindJSON(&article); err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
 
-	err = models.SaveArticle(&article)
+	err := models.SaveArticle(&article)
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
 
 	c.JSON(
-		http.StatusOK,
-		Result.NewSuccess(
-			"新增文章成功",
-			[]any{},
-		),
+		http.StatusCreated,
+		result.New("新增文章成功"),
 	)
 }
 
@@ -47,7 +43,7 @@ func GetArticles(c *gin.Context) {
 		} else {
 			c.JSON(
 				http.StatusBadRequest,
-				Result.NewFail(http.StatusBadRequest, err.Error()),
+				result.New(err.Error()),
 			)
 			return
 		}
@@ -60,7 +56,7 @@ func GetArticles(c *gin.Context) {
 		} else {
 			c.JSON(
 				http.StatusBadRequest,
-				Result.NewFail(http.StatusBadRequest, err.Error()),
+				result.New(err.Error()),
 			)
 			return
 		}
@@ -70,14 +66,14 @@ func GetArticles(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
 
 	c.JSON(
 		http.StatusOK,
-		Result.NewSuccess(
+		result.New(
 			"查找文章成功",
 			articles,
 		),
@@ -89,7 +85,7 @@ func GetArticleByID(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
@@ -98,14 +94,14 @@ func GetArticleByID(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
 
 	c.JSON(
 		http.StatusOK,
-		Result.NewSuccess(
+		result.New(
 			"查找文章成功",
 			article,
 		),
@@ -120,7 +116,7 @@ func GetArticlesInCategory(c *gin.Context) {
 		} else {
 			c.JSON(
 				http.StatusBadRequest,
-				Result.NewFail(http.StatusBadRequest, err.Error()),
+				result.New(err.Error()),
 			)
 			return
 		}
@@ -133,7 +129,7 @@ func GetArticlesInCategory(c *gin.Context) {
 		} else {
 			c.JSON(
 				http.StatusBadRequest,
-				Result.NewFail(http.StatusBadRequest, err.Error()),
+				result.New(err.Error()),
 			)
 			return
 		}
@@ -143,7 +139,7 @@ func GetArticlesInCategory(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
@@ -152,14 +148,14 @@ func GetArticlesInCategory(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
 
 	c.JSON(
 		http.StatusOK,
-		Result.NewSuccess(
+		result.New(
 			"查找文章成功",
 			articles,
 		),
@@ -173,7 +169,7 @@ func PutArticle(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
@@ -181,7 +177,7 @@ func PutArticle(c *gin.Context) {
 	if err = c.ShouldBindJSON(&article); err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
@@ -190,17 +186,14 @@ func PutArticle(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
 
 	c.JSON(
 		http.StatusOK,
-		Result.NewSuccess(
-			"修改文章成功",
-			[]any{},
-		),
+		result.New("修改文章成功"),
 	)
 }
 
@@ -209,7 +202,7 @@ func DeleteArticle(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
@@ -218,16 +211,13 @@ func DeleteArticle(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
 
 	c.JSON(
-		http.StatusOK,
-		Result.NewSuccess(
-			"删除文章成功",
-			[]any{},
-		),
+		http.StatusNoContent,
+		result.New("删除文章成功"),
 	)
 }

@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 	"linhx1999.com/gin-blog/utils"
-	"linhx1999.com/gin-blog/utils/Result"
+	"linhx1999.com/gin-blog/utils/result"
 	"net/http"
 	"strings"
 	"time"
@@ -60,11 +60,8 @@ func JwtToken() gin.HandlerFunc {
 
 		if len(authorizationValues) != 2 && authorizationValues[0] != "Bearer" {
 			c.AbortWithStatusJSON(
-				http.StatusPreconditionFailed,
-				Result.NewFail(
-					http.StatusPreconditionFailed,
-					"header Authorization has not Bearer token",
-				),
+				http.StatusUnauthorized,
+				result.New(http.StatusText(http.StatusUnauthorized)),
 			)
 			return
 		}
@@ -72,11 +69,8 @@ func JwtToken() gin.HandlerFunc {
 		MyCustomClaims, err := JwtParseUser(authorizationValues[1])
 		if err != nil {
 			c.AbortWithStatusJSON(
-				http.StatusPreconditionFailed,
-				Result.NewFail(
-					http.StatusPreconditionFailed,
-					err.Error(),
-				),
+				http.StatusUnauthorized,
+				result.New(err.Error()),
 			)
 			return
 		}
@@ -84,10 +78,7 @@ func JwtToken() gin.HandlerFunc {
 		if time.Now().Unix() > MyCustomClaims.ExpiresAt.Unix() {
 			c.AbortWithStatusJSON(
 				http.StatusUnauthorized,
-				Result.NewFail(
-					http.StatusUnauthorized,
-					"用户未提供身份验证凭据，或者没有通过身份验证。",
-				),
+				result.New(http.StatusText(http.StatusUnauthorized)),
 			)
 			return
 		}

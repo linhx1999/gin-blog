@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"linhx1999.com/gin-blog/models"
-	"linhx1999.com/gin-blog/utils/Result"
+	"linhx1999.com/gin-blog/utils/result"
 	"net/http"
 	"strconv"
 )
@@ -16,7 +16,7 @@ func PostCategory(c *gin.Context) {
 	if err = c.ShouldBindJSON(&category); err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
@@ -25,14 +25,14 @@ func PostCategory(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
 	if count > 0 {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New("分类已存在"),
 		)
 		return
 	}
@@ -41,17 +41,14 @@ func PostCategory(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
 
 	c.JSON(
-		http.StatusOK,
-		Result.NewSuccess(
-			"新增分类成功",
-			[]any{},
-		),
+		http.StatusCreated,
+		result.New("新增分类成功"),
 	)
 }
 
@@ -63,7 +60,7 @@ func GetCategories(c *gin.Context) {
 		} else {
 			c.JSON(
 				http.StatusBadRequest,
-				Result.NewFail(http.StatusBadRequest, err.Error()),
+				result.New(err.Error()),
 			)
 			return
 		}
@@ -76,7 +73,7 @@ func GetCategories(c *gin.Context) {
 		} else {
 			c.JSON(
 				http.StatusBadRequest,
-				Result.NewFail(http.StatusBadRequest, err.Error()),
+				result.New(err.Error()),
 			)
 			return
 		}
@@ -86,14 +83,14 @@ func GetCategories(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
 
 	c.JSON(
 		http.StatusOK,
-		Result.NewSuccess(
+		result.New(
 			"查找分类成功",
 			categories,
 		),
@@ -107,7 +104,7 @@ func PutCategory(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
@@ -115,7 +112,7 @@ func PutCategory(c *gin.Context) {
 	if err = c.ShouldBindJSON(&category); err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
@@ -124,14 +121,14 @@ func PutCategory(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
 	if count > 0 {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
@@ -140,17 +137,14 @@ func PutCategory(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
 
 	c.JSON(
 		http.StatusOK,
-		Result.NewSuccess(
-			"修改分类成功",
-			[]any{},
-		),
+		result.New("修改分类成功"),
 	)
 }
 
@@ -159,7 +153,7 @@ func DeleteCategory(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
@@ -168,16 +162,13 @@ func DeleteCategory(c *gin.Context) {
 	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
-			Result.NewFail(http.StatusBadRequest, err.Error()),
+			result.New(err.Error()),
 		)
 		return
 	}
 
 	c.JSON(
-		http.StatusOK,
-		Result.NewSuccess(
-			"删除分类成功",
-			[]any{},
-		),
+		http.StatusNoContent,
+		result.New("删除分类成功"),
 	)
 }
