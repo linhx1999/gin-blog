@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"linhx1999.com/gin-blog/config"
 	"linhx1999.com/gin-blog/controllers/v1"
+	"linhx1999.com/gin-blog/middlewares"
 	"net/http"
 )
 
@@ -19,23 +20,28 @@ func SetupRouter() *gin.Engine {
 		c.String(http.StatusOK, "pong")
 	})
 
-	router := r.Group("api/v1")
+	authorized := r.Group("api/v1", middlewares.JwtToken())
 	{
-		router.POST("login", v1.Login)
-
-		router.POST("users", v1.PostUser)
+		authorized.POST("users", v1.PostUser)
 		//router.GET("users", v1.GetUsers)
 		//router.PUT("users/:id", v1.PutUser)
 		//router.DELETE("users/:id", v1.DeleteUser)
 
-		router.POST("categories", v1.PostCategory)
-		router.GET("categories", v1.GetCategories)
-		router.PUT("categories/:id", v1.PutCategory)
-		router.DELETE("categories/:id", v1.DeleteCategory)
+		authorized.POST("categories", v1.PostCategory)
+		authorized.PUT("categories/:id", v1.PutCategory)
+		authorized.DELETE("categories/:id", v1.DeleteCategory)
 
-		router.POST("articles", v1.PostArticle)
-		router.DELETE("articles/:id", v1.DeleteArticle)
-		router.PUT("articles/:id", v1.PutArticle)
+		authorized.POST("articles", v1.PostArticle)
+		authorized.DELETE("articles/:id", v1.DeleteArticle)
+		authorized.PUT("articles/:id", v1.PutArticle)
+	}
+
+	router := r.Group("api/v1")
+	{
+		router.POST("login", v1.Login)
+
+		router.GET("categories", v1.GetCategories)
+
 		router.GET("articles", v1.GetArticles)
 		router.GET("articles/:id", v1.GetArticleByID)
 		router.GET("categories/:id/articles", v1.GetArticlesInCategory)

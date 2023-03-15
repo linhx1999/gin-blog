@@ -2,6 +2,7 @@ package v1
 
 import (
 	"github.com/gin-gonic/gin"
+	"linhx1999.com/gin-blog/middlewares"
 	"linhx1999.com/gin-blog/models"
 	"linhx1999.com/gin-blog/utils"
 	"linhx1999.com/gin-blog/utils/result"
@@ -36,9 +37,18 @@ func Login(c *gin.Context) {
 	}
 	if utils.ScryptPassword(user.Password) == user2.Password {
 		if user2.IsAdmin == 1 {
+			tokenString, err := middlewares.CreatToken(user.Username)
+			if err != nil {
+				c.JSON(
+					http.StatusBadRequest,
+					result.New(err.Error()),
+				)
+				return
+			}
+
 			c.JSON(
 				http.StatusOK,
-				result.New("管理员登陆成功"),
+				result.New("管理员登陆成功", tokenString),
 			)
 		} else {
 			c.JSON(

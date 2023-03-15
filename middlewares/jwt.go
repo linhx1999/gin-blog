@@ -17,7 +17,7 @@ type MyCustomClaims struct {
 	jwt.RegisteredClaims
 }
 
-func CreatTokenByCustomClaims(username string, password string) (string, error) {
+func CreatToken(username string) (string, error) {
 	//Create the Claims
 	claims := MyCustomClaims{
 		username,
@@ -51,9 +51,7 @@ func JwtParseUser(tokenString string) (*MyCustomClaims, error) {
 func JwtToken() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authorizationValue := c.GetHeader("Authorization")
-		//if authorizationValue == "" {
-		//
-		//}
+
 		authorizationValues := strings.Split(authorizationValue, " ")
 
 		if len(authorizationValues) != 2 && authorizationValues[0] != "Bearer" {
