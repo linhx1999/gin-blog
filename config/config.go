@@ -19,23 +19,23 @@ var (
 	DBPassword string
 )
 
-func LoadConf() {
-	cfg, err := ini.Load("app.ini")
+func init() {
+	cfg, err := ini.Load("./config/config.ini")
 	if err != nil {
 		fmt.Printf("Fail to read file: %v", err)
 		os.Exit(1)
 	}
-	LoadServer(cfg)
-	LoadData(cfg)
+	loadServer(cfg)
+	loadData(cfg)
 }
 
-func LoadServer(iniFile *ini.File) {
+func loadServer(iniFile *ini.File) {
 	AppMode = iniFile.Section("").Key("app_mode").String()
 	HttpPort = iniFile.Section("server").Key("http_port").String()
 	JwtKey = iniFile.Section("server").Key("jwt_key").String()
 }
 
-func LoadData(iniFile *ini.File) {
+func loadData(iniFile *ini.File) {
 	dbSection := iniFile.Section("database")
 	DB = dbSection.Key("db").String()
 	DBHost = dbSection.Key("db_host").String()

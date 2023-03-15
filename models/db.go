@@ -21,7 +21,8 @@ func InitDB() {
 		config.DBName,
 	)
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+	var err error
+	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		},

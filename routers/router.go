@@ -2,8 +2,8 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	setting "linhx1999.com/gin-blog/config"
-	v1 "linhx1999.com/gin-blog/controllers/v1"
+	"linhx1999.com/gin-blog/config"
+	"linhx1999.com/gin-blog/controllers/v1"
 	"net/http"
 )
 
@@ -11,7 +11,7 @@ func SetupRouter() *gin.Engine {
 	// Disable Console Color
 	// gin.DisableConsoleColor()
 
-	gin.SetMode(setting.AppMode)
+	gin.SetMode(config.AppMode)
 	r := gin.Default()
 
 	// Ping test
@@ -19,8 +19,10 @@ func SetupRouter() *gin.Engine {
 		c.String(http.StatusOK, "pong")
 	})
 
-	router := r.Group("controllers/v1")
+	router := r.Group("api/v1")
 	{
+		router.POST("login", v1.Login)
+
 		router.POST("users", v1.PostUser)
 		//router.GET("users", v1.GetUsers)
 		//router.PUT("users/:id", v1.PutUser)

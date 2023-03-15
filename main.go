@@ -9,8 +9,8 @@ import (
 //var db = make(map[string]string)
 
 func main() {
+	//config.LoadConf()
 	models.InitDB()
-	config.LoadConf()
 
 	r := routers.SetupRouter()
 
