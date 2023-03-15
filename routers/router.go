@@ -34,6 +34,9 @@ func SetupRouter() *gin.Engine {
 		authorized.POST("articles", v1.PostArticle)
 		authorized.DELETE("articles/:id", v1.DeleteArticle)
 		authorized.PUT("articles/:id", v1.PutArticle)
+
+		authorized.POST("upload", v1.Upload)
+
 	}
 
 	router := r.Group("api/v1")
